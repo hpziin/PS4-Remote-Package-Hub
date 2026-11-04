@@ -1,65 +1,53 @@
-
 # PS4 Remote Package Hub
 
-Aplicativo web estático para comunicação direta com o Remote Package Installer do PS4.
+Interface web para comunicação com o Remote Package Installer do PS4.
+
+## Recursos
+
+- Interface adaptada para navegador do PS4.
+- Configuração de IP e porta.
+- Teste de comunicação com o RPI.
+- Envio de URL direta de PKG.
+- Catálogo em JSON.
+- Histórico de operações.
 
 ## Requisitos
 
-- Windows
-- Navegador atualizado
-- PS4 na mesma rede local
-- Remote Package Installer instalado e aberto
-- IP local do PS4
-- Porta padrão 12800
+- PS4 conectado à mesma rede local do dispositivo que hospeda a página.
+- Remote Package Installer instalado e em execução.
+- Endereço IP correto do console.
+- Porta padrão 12800.
+- URL do PKG acessível pelo próprio PS4.
 
-## Publicação
+## Publicação no GitHub Pages
 
 1. Crie um repositório no GitHub.
-2. Envie todos os arquivos para a raiz.
-3. Entre em Settings.
-4. Abra Pages.
-5. Selecione Deploy from a branch.
-6. Escolha main.
-7. Selecione /(root).
-8. Salve.
+2. Envie todos os arquivos mantendo as pastas.
+3. Acesse Settings.
+4. Entre em Pages.
+5. Em Build and deployment, escolha Deploy from a branch.
+6. Escolha a branch main e a pasta /root.
+7. Salve e aguarde a publicação.
 
 ## Configuração
 
-1. Abra o site.
-2. Entre em Console / RPI.
-3. Informe o IP do PS4.
-4. Mantenha a porta 12800.
-5. Salve.
-6. Teste a comunicação.
+Abra o endereço do GitHub Pages no navegador do PS4.
 
-## API
+Informe o IP local do console e mantenha a porta 12800.
 
-POST /api/is_exists
+Clique em Salvar endereço e depois em Testar conexão.
 
-POST /api/install
+## Limitações técnicas
 
-Envio direto:
+O GitHub Pages é HTTPS, enquanto o RPI normalmente usa HTTP na rede local.
 
-{
-  "type": "direct",
-  "packages": [
-    "https://servidor.com/arquivo.pkg"
-  ]
-}
+O navegador pode bloquear essa comunicação por políticas de conteúdo misto,
+CORS ou segurança de rede local.
 
-Manifesto:
+O RPI precisa aceitar a origem do GitHub Pages e responder aos pedidos
+OPTIONS quando o navegador exigir preflight.
 
-{
-  "type": "ref_pkg_url",
-  "url": "https://servidor.com/manifest.json"
-}
+Uma resposta de instalação aceita pelo RPI não significa que o pacote
+já terminou de instalar.
 
-## Limitações
-
-O GitHub Pages utiliza HTTPS. O RPI original utiliza HTTP na rede local.
-
-O navegador pode bloquear o acesso por conteúdo misto ou CORS.
-
-O modo no-cors não confirma o recebimento do comando.
-
-O catálogo, histórico e fila são armazenados localmente no navegador.
+A URL do pacote deve ser acessível diretamente pelo PS4.
