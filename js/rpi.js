@@ -1,3 +1,4 @@
+
 (function () {
     "use strict";
 
@@ -6,13 +7,16 @@
         port: 12800,
 
         configure: function (ip, port) {
-            this.ip = String(ip || "").replace(/^https?:\/\//, "").replace(/\/.*$/, "");
+            this.ip = String(ip || "")
+                .replace(/^https?:\/\//i, "")
+                .replace(/\/.*$/, "");
+
             this.port = parseInt(port, 10) || 12800;
         },
 
         getBaseURL: function () {
             if (!this.ip) {
-                throw new Error("Informe o endereço IP do PS4.");
+                throw new Error("IP do PS4 não configurado.");
             }
 
             return "http://" + this.ip + ":" + this.port;
@@ -30,8 +34,19 @@
             }
 
             xhr.open("POST", url, true);
-            xhr.timeout = 12000;
-            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.timeout = 15000;
+
+            /*
+             * text/plain evita o preflight CORS tradicional
+             * causado pelo Content-Type application/json.
+             *
+             * O corpo continua sendo JSON. O RPI original
+             * interpreta o corpo como JSON.
+             */
+            xhr.setRequestHeader(
+                "Content-Type",
+                "text/plain;charset=UTF-8"
+            );
 
             xhr.onreadystatechange = function () {
                 if (xhr.readyState !== 4) {
@@ -45,7 +60,7 @@
                         response = JSON.parse(xhr.responseText);
                     } catch (error) {
                         callback(
-                            new Error("O RPI respondeu, mas o conteúdo não é JSON válido."),
+                            new Error("Resposta do RPI não é JSON válido."),
                             null
                         );
                         return;
@@ -54,10 +69,7 @@
                     callback(null, response);
                 } else {
                     callback(
-                        new Error(
-                            "HTTP " + xhr.status +
-                            ". O servidor RPI respondeu com erro."
-                        ),
+                        new Error("Resposta HTTP: " + xhr.status),
                         null
                     );
                 }
@@ -66,7 +78,8 @@
             xhr.onerror = function () {
                 callback(
                     new Error(
-                        "Falha de rede ou bloqueio do navegador. Verifique HTTP, CORS e o IP."
+                        "O navegador bloqueou a comunicação ou o RPI não respondeu. " +
+                        "Verifique CORS, HTTP e acesso à rede local."
                     ),
                     null
                 );
@@ -74,13 +87,9 @@
 
             xhr.ontimeout = function () {
                 callback(
-                    new Error("Tempo esgotado. O RPI não respondeu."),
+                    new Error("Tempo esgotado aguardando o RPI."),
                     null
                 );
-            };
-
-            xhr.onabort = function () {
-                callback(new Error("Requisição cancelada."), null);
             };
 
             try {
@@ -99,14 +108,9 @@
         },
 
         install: function (pkgURL, callback) {
-            if (!pkgURL) {
-                callback(new Error("Informe a URL do PKG."), null);
-                return;
-            }
-
             if (!/^https?:\/\//i.test(pkgURL)) {
                 callback(
-                    new Error("A URL precisa começar com http:// ou https://"),
+                    new Error("Informe uma URL HTTP ou HTTPS válida."),
                     null
                 );
                 return;
