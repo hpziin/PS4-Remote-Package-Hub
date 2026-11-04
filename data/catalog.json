@@ -1,9 +1,9 @@
 
 [
   {
-    "id": "demo-001",
-    "name": "Exemplo de jogo",
-    "url": "https://example.com/arquivo.pkg",
+    "id": "ITEM00001",
+    "name": "Itemzflow",
+    "url": "https://pkg-zone.com/download/ps4/ITEM00001/latest",
     "type": "Jogo"
   }
 ]
