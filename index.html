@@ -1,346 +1,151 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#080d18">
     <title>PS4 Remote Package Hub</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-<div class="layout">
-
-    <aside class="sidebar">
-        <div class="logo">
-            <div class="logo-icon">RPI</div>
-            <div>
-                <strong>REMOTE PACKAGE</strong>
-                <small>HUB PS4</small>
-            </div>
+<header class="topbar">
+    <div class="brand">
+        <div class="brand-icon">PS</div>
+        <div>
+            <h1>REMOTE PACKAGE HUB</h1>
+            <span>PLAYSTATION 4 • PACKAGE MANAGER</span>
         </div>
+    </div>
+    <div class="connection">
+        <span id="connectionDot" class="dot"></span>
+        <span id="connectionText">DESCONECTADO</span>
+    </div>
+</header>
 
-        <p class="menu-title">WORKSPACE</p>
-        <button class="nav active" data-page="dashboard">◫ Dashboard</button>
-        <button class="nav" data-page="installer">⇧ PKG Installer</button>
-        <button class="nav" data-page="catalog">▦ Catálogo</button>
-        <button class="nav" data-page="queue">☷ Fila de envio</button>
-        <button class="nav" data-page="history">◷ Histórico</button>
+<main class="container">
 
-        <p class="menu-title">SYSTEM</p>
-        <button class="nav" data-page="console">⌁ Console / RPI</button>
-        <button class="nav" data-page="settings">⚙ Configurações</button>
-
-        <div class="sidebar-footer">
-            <span class="online-dot"></span>
-            GitHub Pages
-        </div>
-    </aside>
-
-    <main class="main">
-
-        <header class="topbar">
-            <div>
-                <small class="eyebrow">PLAYSTATION 4 · REMOTE INSTALL</small>
-                <h1 id="page-title">Dashboard</h1>
-            </div>
-            <div class="connection-status" id="connection-label">
-                <span class="online-dot"></span>
-                Console não testado
-            </div>
-        </header>
-
-        <!-- DASHBOARD -->
-        <section class="page active" id="page-dashboard">
-
-            <div class="hero">
-                <div>
-                    <small class="eyebrow">DIRECT CONSOLE LINK</small>
-                    <h2>Seu centro de instalação<br>
-                        <span>remota para PS4.</span>
-                    </h2>
-                    <p>Envie comandos de instalação diretamente ao Remote Package Installer.</p>
-                    <button class="primary" data-go="installer">+ Novo envio</button>
-                </div>
-                <div class="hero-console">
-                    <div class="console-circle">
-                        <div class="console-device">PS4</div>
-                    </div>
-                    <small>RPI · PORT 12800</small>
-                </div>
-            </div>
-
-            <div class="stats">
-                <div class="stat">
-                    <small>CONSOLE</small>
-                    <strong id="dash-console">Não configurado</strong>
-                    <span>Endereço do PS4</span>
-                </div>
-                <div class="stat">
-                    <small>FILA LOCAL</small>
-                    <strong id="dash-queue">0</strong>
-                    <span>Itens aguardando</span>
-                </div>
-                <div class="stat">
-                    <small>HISTÓRICO</small>
-                    <strong id="dash-history">0</strong>
-                    <span>Atividades registradas</span>
-                </div>
-                <div class="stat">
-                    <small>CONEXÃO</small>
-                    <strong id="dash-connection">Pendente</strong>
-                    <span>Estado do RPI</span>
-                </div>
-            </div>
-
-            <h3>Acesso rápido</h3>
-
-            <div class="quick-grid">
-                <button class="quick" data-go="installer">
-                    <span>⇧</span>
-                    <strong>Instalar PKG</strong>
-                    <small>Enviar pacote por URL</small>
-                </button>
-
-                <button class="quick" data-go="catalog">
-                    <span>▦</span>
-                    <strong>Catálogo</strong>
-                    <small>Organizar seus conteúdos</small>
-                </button>
-
-                <button class="quick" data-go="console">
-                    <span>⌁</span>
-                    <strong>Configurar PS4</strong>
-                    <small>IP e porta do RPI</small>
-                </button>
-            </div>
-
-            <div class="notice warning">
-                O GitHub Pages usa HTTPS e o RPI normalmente usa HTTP.
-                O navegador pode bloquear o acesso por políticas de segurança,
-                CORS ou conteúdo misto.
-            </div>
-
-        </section>
-
-        <!-- INSTALLER -->
-        <section class="page" id="page-installer">
-
-            <h2>PKG Installer</h2>
+    <section class="welcome">
+        <div>
+            <p class="eyebrow">CENTRAL DE INSTALAÇÃO</p>
+            <h2>Seu console.<br><span>Seu controle.</span></h2>
             <p class="description">
-                Envie uma solicitação de instalação diretamente ao PS4.
+                Gerencie instalações de pacotes diretamente pelo navegador.
             </p>
+        </div>
+        <div class="console-art">
+            <div class="console-line"></div>
+            <div class="console-label">PS4 / RPI</div>
+        </div>
+    </section>
 
-            <div class="panel">
-
-                <label>TIPO DE ENVIO</label>
-
-                <div class="segmented">
-                    <button class="seg active" data-kind="direct">
-                        URL direta
-                    </button>
-                    <button class="seg" data-kind="manifest">
-                        Manifesto JSON
-                    </button>
-                </div>
-
-                <div id="direct-fields">
-                    <label>URL DO ARQUIVO PKG</label>
-                    <input id="pkg-url" type="url"
-                        placeholder="https://servidor.com/jogo.pkg">
-
-                    <label>OUTRAS PARTES (OPCIONAL)</label>
-                    <textarea id="pkg-extra"
-                        placeholder="Uma URL por linha"></textarea>
-                </div>
-
-                <div id="manifest-fields" hidden>
-                    <label>URL DO MANIFESTO JSON</label>
-                    <input id="manifest-url" type="url"
-                        placeholder="https://servidor.com/manifest.json">
-                </div>
-
-                <label>NOME DO CONTEÚDO</label>
-                <input id="pkg-label" placeholder="Nome do jogo ou conteúdo">
-
-                <div class="button-row">
-                    <button class="primary" id="send-now">Enviar ao PS4</button>
-                    <button class="secondary" id="add-queue">Adicionar à fila</button>
-                </div>
-
-                <p id="send-feedback" class="feedback">
-                    Configure o IP do PS4 antes de enviar.
-                </p>
-
+    <section class="panel">
+        <div class="section-title">
+            <div>
+                <span class="eyebrow">01 / CONEXÃO</span>
+                <h2>Conectar ao console</h2>
             </div>
+            <span class="tag">REDE LOCAL</span>
+        </div>
 
-            <div class="notice">
-                O PS4 recebe o comando e baixa o pacote a partir da URL.
-                O site não transfere nem hospeda o arquivo PKG.
-            </div>
+        <div class="field">
+            <label for="ps4ip">ENDEREÇO IP DO PS4</label>
+            <input id="ps4ip" type="text"
+                   placeholder="192.168.68.XX"
+                   value="">
+        </div>
 
-        </section>
-
-        <!-- CATALOG -->
-        <section class="page" id="page-catalog">
-
-            <div class="section-heading">
-                <div>
-                    <h2>Catálogo</h2>
-                    <p>Biblioteca de pacotes salva neste navegador.</p>
-                </div>
-                <button class="primary" id="new-catalog">+ Adicionar</button>
-            </div>
-
-            <div class="toolbar">
-                <input id="catalog-search" placeholder="Pesquisar conteúdo...">
-                <button class="secondary" id="export-catalog">Exportar JSON</button>
-                <label class="secondary file-label">
-                    Importar JSON
-                    <input type="file" id="import-catalog" accept=".json">
-                </label>
-            </div>
-
-            <div id="catalog-list" class="item-list"></div>
-            <div id="catalog-empty" class="empty">
-                Nenhum conteúdo cadastrado.
-            </div>
-
-        </section>
-
-        <!-- QUEUE -->
-        <section class="page" id="page-queue">
-
-            <div class="section-heading">
-                <div>
-                    <h2>Fila de envio</h2>
-                    <p>Conteúdos aguardando envio manual.</p>
-                </div>
-                <button class="secondary" id="clear-queue">Limpar fila</button>
-            </div>
-
-            <div id="queue-list" class="item-list"></div>
-            <div id="queue-empty" class="empty">Fila vazia.</div>
-
-        </section>
-
-        <!-- HISTORY -->
-        <section class="page" id="page-history">
-
-            <div class="section-heading">
-                <div>
-                    <h2>Histórico</h2>
-                    <p>Registro das tentativas feitas pelo site.</p>
-                </div>
-                <button class="secondary" id="clear-history">Limpar histórico</button>
-            </div>
-
-            <div id="history-list" class="item-list"></div>
-            <div id="history-empty" class="empty">Nenhuma atividade.</div>
-
-        </section>
-
-        <!-- CONSOLE -->
-        <section class="page" id="page-console">
-
-            <h2>Console / RPI</h2>
-            <p class="description">Configuração de conexão direta com o PS4.</p>
-
-            <div class="panel">
-
-                <label>ENDEREÇO IPv4 DO PS4</label>
-                <input id="ps4-ip" placeholder="192.168.1.100">
-
-                <label>PORTA DO RPI</label>
-                <input id="ps4-port" type="number" value="12800">
-
-                <label>ENDPOINT</label>
-                <div class="endpoint" id="endpoint-preview">
-                    Informe o IP do PS4
-                </div>
-
-                <div class="button-row">
-                    <button class="primary" id="save-console">Salvar</button>
-                    <button class="secondary" id="test-connection">Testar RPI</button>
-                </div>
-
-                <p id="connection-feedback" class="feedback">
-                    O RPI precisa estar aberto no PS4.
-                </p>
-
-            </div>
-
-            <div class="notice warning">
-                Mantenha o Remote Package Installer aberto no PS4.
-                O computador e o console precisam estar na mesma rede local.
-            </div>
-
-        </section>
-
-        <!-- SETTINGS -->
-        <section class="page" id="page-settings">
-
-            <h2>Configurações</h2>
-
-            <div class="panel">
-
-                <label>MODO DE COMUNICAÇÃO</label>
-                <select id="send-mode">
-                    <option value="auto">Automático</option>
-                    <option value="read">Somente leitura de resposta</option>
-                    <option value="opaque">Sem leitura de resposta</option>
-                </select>
-
-                <div class="notice">
-                    No modo sem leitura, o navegador não consegue confirmar
-                    se o PS4 recebeu o comando.
-                </div>
-
-                <button class="secondary" id="clear-local">
-                    Apagar todos os dados locais
-                </button>
-
-            </div>
-
-        </section>
-
-        <footer>
-            PS4 REMOTE PACKAGE HUB · INTERFACE NÃO OFICIAL
-        </footer>
-
-    </main>
-</div>
-
-<!-- MODAL DE CATÁLOGO -->
-<dialog id="catalog-dialog">
-    <form method="dialog" id="catalog-form">
-        <h3>Novo conteúdo</h3>
-
-        <label>Nome</label>
-        <input id="catalog-name" required>
-
-        <label>URL PKG</label>
-        <input id="catalog-url" type="url" required>
-
-        <label>Categoria</label>
-        <select id="catalog-type">
-            <option>Jogo</option>
-            <option>Update</option>
-            <option>DLC</option>
-            <option>Outro</option>
-        </select>
+        <div class="field">
+            <label for="ps4port">PORTA DO RPI</label>
+            <input id="ps4port" type="number" value="12800">
+        </div>
 
         <div class="button-row">
-            <button class="primary" id="save-catalog-item" value="default">
-                Salvar
+            <button id="saveConnection" class="button secondary">
+                SALVAR ENDEREÇO
             </button>
-            <button class="secondary" value="cancel">Cancelar</button>
+            <button id="testConnection" class="button primary">
+                TESTAR CONEXÃO
+            </button>
         </div>
-    </form>
-</dialog>
 
-<script src="js/app.js"></script>
+        <div id="connectionMessage" class="message">
+            Informe o IP do PS4 para começar.
+        </div>
+    </section>
+
+    <section class="panel">
+        <div class="section-title">
+            <div>
+                <span class="eyebrow">02 / INSTALAÇÃO</span>
+                <h2>Enviar pacote PKG</h2>
+            </div>
+            <span class="tag">REMOTE INSTALLER</span>
+        </div>
+
+        <div class="field">
+            <label for="pkgurl">URL DIRETA DO ARQUIVO PKG</label>
+            <input id="pkgurl" type="text"
+                   placeholder="https://servidor.com/arquivo.pkg">
+        </div>
+
+        <p class="help">
+            Informe um endereço direto para um arquivo PKG que o próprio PS4
+            consiga acessar. O endereço não pode depender de login no navegador.
+        </p>
+
+        <div class="field">
+            <label for="installType">TIPO DE INSTALAÇÃO</label>
+            <select id="installType">
+                <option value="direct">Instalação direta por URL</option>
+            </select>
+        </div>
+
+        <button id="installButton" class="button primary full">
+            INICIAR INSTALAÇÃO
+        </button>
+
+        <div id="installMessage" class="message">
+            Aguardando um pacote.
+        </div>
+    </section>
+
+    <section class="panel">
+        <div class="section-title">
+            <div>
+                <span class="eyebrow">03 / CATÁLOGO</span>
+                <h2>Meus pacotes</h2>
+            </div>
+            <span class="tag">CATALOG.JSON</span>
+        </div>
+
+        <div id="catalogList" class="catalog-list">
+            <p class="muted">Carregando catálogo...</p>
+        </div>
+    </section>
+
+    <section class="panel">
+        <div class="section-title">
+            <div>
+                <span class="eyebrow">04 / ATIVIDADE</span>
+                <h2>Registro de operações</h2>
+            </div>
+            <button id="clearHistory" class="small-button">LIMPAR</button>
+        </div>
+
+        <div id="historyList" class="history-list">
+            <p class="muted">Nenhuma operação registrada.</p>
+        </div>
+    </section>
+
+    <footer>
+        <span>PS4 REMOTE PACKAGE HUB</span>
+        <span>INTERFACE WEB • GITHUB PAGES</span>
+    </footer>
+
+</main>
+
 <script src="js/rpi.js"></script>
-
+<script src="js/app.js"></script>
 </body>
 </html>
